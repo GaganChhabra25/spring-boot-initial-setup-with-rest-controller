@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+
+
 @Setter@Getter@NoArgsConstructor
 public class Student {
 
@@ -12,6 +14,7 @@ public class Student {
     private String name;
     private String description;
     private List<Course> courses;
+
 
     public Student(String id, String name, String description, List<Course> courses) {
         this.id = id;

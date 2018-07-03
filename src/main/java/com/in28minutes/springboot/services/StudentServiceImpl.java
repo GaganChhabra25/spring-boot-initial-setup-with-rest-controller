@@ -2,6 +2,10 @@ package com.in28minutes.springboot.services;
 
 import com.in28minutes.springboot.model.Course;
 import com.in28minutes.springboot.model.Student;
+import com.in28minutes.springboot.model.ws.StudentWS;
+import com.in28minutes.springboot.repository.StudentRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
@@ -9,11 +13,16 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class StudentServiceImpl implements  StudentService {
 
+    @Autowired
+    private StudentRepository studentRepository;
+
     private static List<Student> students = new ArrayList<>();
+   private static Optional<List<Student>>  optionalStudents;
 
     static {
         //Initialize Data
@@ -41,6 +50,7 @@ public class StudentServiceImpl implements  StudentService {
 
         students.add(ranga);
         students.add(satish);
+        optionalStudents =  Optional.of(students);
     }
 
     public List<Student> retrieveAllStudents() {
@@ -98,4 +108,22 @@ public class StudentServiceImpl implements  StudentService {
 
         return course;
     }
+
+    @Override
+    public void createStudent(Student student) {
+        ModelMapper mapper = new ModelMapper();
+        StudentWS studentWS = mapper.map(student, StudentWS.class);
+        System.out.println(studentWS);
+    }
+
+    public Optional<Student> getStudentById(String studentId) {
+        Optional<Student> student = studentRepository.getStudentById(studentId);
+       student.ifPresent(student1 -> {
+           student1.setName("Gagan");
+       });
+       return student;
+    }
+
 }
+
+
