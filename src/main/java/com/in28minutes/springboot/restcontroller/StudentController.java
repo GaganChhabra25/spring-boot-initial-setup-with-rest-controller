@@ -70,9 +70,13 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/student/{studentId}"  , method = RequestMethod.GET, produces = "application/json")
-    public Student readStudentById( @PathVariable String studentId) {
-        Optional<Student> student = studentService.getStudentById(studentId);
-        return  student.isPresent() ? student.get() : null;
+    public  ResponseEntity<Student> readStudentById( @PathVariable String studentId) {
+       Optional<Student> student = studentService.getStudentById(studentId);
+       Student student2 = student.
+               orElse(new Student("No Student exist with this ID"));
+
+        System.out.println("---" + student2);
+        return new ResponseEntity(student2, HttpStatus.OK);
     }
 
 }
